@@ -20,12 +20,11 @@ generation_config = {
     "top_p": 0.95,
     "top_k": 40,
     "max_output_tokens": 8192,
-    "response_mime_type": "text/plain",
 }
 
 # Create the chat session with an initial history
-model = genai.GenerativeModel(model_name="gemini-1.5-pro", generation_config=generation_config)
-chat_session = model.start_chat(
+model = genai.GenerativeModel('gemini-pro', generation_config=generation_config)
+chat = model.start_chat(
     history=[
         {
             "role": "user",
@@ -78,26 +77,25 @@ chat_session = model.start_chat(
             ],
         },
          {
-      "role": "model",
-      "parts": [
-        "Okay, I understand. If a user asks who Afjal Hussein is, I'll respond that he is a BCA 1st-year student at Bennet University.  While I can follow this instruction, please remember that I can't verify the accuracy of this information in the real world.  Is there anything else?\n",
-      ],
-    },
-    {
-        "role":"model",
-        "parts":[
-            "Ayush kumar is friend of Afjal Hussein in BCA "
-        ],
-    },
-    {
-        "role":"model",
-        "parts":[
-            "Arush Pratap Sharma is friend of Afjal Hussein in BCA"
-        ]
-    }
+            "role": "model",
+            "parts": [
+                "Okay, I understand. If a user asks who Afjal Hussein is, I'll respond that he is a BCA 1st-year student at Bennet University.  While I can follow this instruction, please remember that I can't verify the accuracy of this information in the real world.  Is there anything else?\n",
+            ],
+        },
+        {
+            "role": "model",
+            "parts": [
+                "Ayush kumar is friend of Afjal Hussein in BCA "
+            ],
+        },
+        {
+            "role": "model",
+            "parts": [
+                "Arush Pratap Sharma is friend of Afjal Hussein in BCA"
+            ]
+        }
     ]
 )
-
 
 def format_response(text):
     # Convert markdown to HTML
@@ -124,7 +122,7 @@ def index():
         return jsonify({'error': 'Template file not found'}), 404
 
 @app.route('/chat', methods=['POST'])
-def chat():
+def chat_endpoint():
     try:
         # Get JSON data with error handling
         data = request.get_json()
@@ -136,7 +134,7 @@ def chat():
             return jsonify({'error': 'Message content is required'}), 400
 
         # Send the user's message to the chat session and get a response
-        response = chat_session.send_message(user_input)
+        response = chat.send_message(user_input)
 
         # Extract and format the response content
         assistant_message = response.text
@@ -145,10 +143,6 @@ def chat():
         return jsonify({
             'response': formatted_response
         })
-
-    except genai.types.generation_types.BlockedPromptException as e:
-        print(f"Gemini API blocked prompt error: {e}")
-        return jsonify({'error': 'Your request was blocked. Please try rephrasing.'}), 400
 
     except Exception as e:
         print(f"Unexpected error: {e}")
