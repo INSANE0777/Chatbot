@@ -1,5 +1,6 @@
 Flask==2.3.3
 Flask-Cors==3.0.10
-google-generativeai==0.1.0  # Update this with the actual version if needed
+google-generativeai==0.1.0  # Adjust version as needed
 python-dotenv==1.0.0
 markdown2==2.4.8
+gunicorn==20.1.0
