@@ -1,6 +1,14 @@
 Flask==2.3.3
 Flask-Cors==3.0.10
-google-generativeai==0.1.0  # Adjust version as needed
+google-generativeai==0.1.0
 python-dotenv==1.0.0
 markdown2==2.4.8
 gunicorn==20.1.0
+Werkzeug==2.3.7  # Required by Flask 2.3.3
+click>=8.0.0  # Required by Flask
+itsdangerous>=2.0  # Required by Flask
+Jinja2>=3.0  # Required by Flask
+MarkupSafe>=2.0  # Required by Jinja2
+blinker>=1.6.2  # Required by Flask 2.3+
+typing-extensions>=4.0.0  # Required by modern Python packages
+requests>=2.28.0  # Required by google-generativeai
